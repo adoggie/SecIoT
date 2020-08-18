@@ -1,0 +1,35 @@
+
+# 设备编号
+id=DTU-XXX-0001
+
+type=1
+token=a12312
+listen_ip=127.0.0.1
+listen_port=9086
+next_hop_ip=127.0.0.1
+next_hop_port=9087
+
+in_secure=false
+out_secure=true
+
+upstream_ip = 127.0.0.1
+upstream_port = 9088
+
+#调试输出
+debug.log.udp.enable = true
+debug.log.udp.host= 192.168.0.100
+debug.log.udp.port= 9906
+
+#是否定时检查呼叫的存活包(开发模式可关闭)
+keepalive_check.enable = false
+
+
+
+local_id = 01234567890123456789012345678901
+
+local_pub_key = 222222
+local_pri_key = 333333
+
+
+remote_pub_key_01234567890123456789012345678902= 111111
+

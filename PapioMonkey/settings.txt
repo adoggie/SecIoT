@@ -1,0 +1,36 @@
+
+# 设备编号
+id=DTU-XXX-0001
+
+type=1
+token=a12312
+server_ip=127.0.0.1
+server_port=9088
+
+#收集参数的脚本
+script_data_query=bash getparams.sh
+script_data_set = bash setparams.sh
+
+# controller.check_timer = 5
+
+#
+secret_key=123456
+
+#
+http.port=7001
+http.document_root=/tmp/dtu/http
+
+
+#调试输出
+debug.log.udp.enable = true
+debug.log.udp.host= 192.168.0.100
+debug.log.udp.port= 9906
+
+#是否定时检查呼叫的存活包(开发模式可关闭)
+keepalive_check.enable = false
+
+sensor_pub_address=ipc:///var/monkey_pub.sock
+sensor_sub_address=ipc:///var/monkey_sub.sock
+
+sensor_pub_address=tcp://127.0.0.1:8901
+sensor_sub_address=tcp://127.0.0.1:8902

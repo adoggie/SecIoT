@@ -1,4 +1,9 @@
 # Prerequisites
+.idea/*
+.idea
+*.pyc
+*.log
+
 *.d
 
 # Compiled Object files
