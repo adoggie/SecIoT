@@ -14,6 +14,7 @@
 #include "utils.h"
 #include "Connector.h"
 #include "DirectionIn.h"
+#include "sdf-utils.h"
 
 
 bool Controller::init(const Config& cfgs){
@@ -34,7 +35,7 @@ bool Controller::init(const Config& cfgs){
 	timer_->expires_after(std::chrono::seconds( check_timer_interval_));
 	timer_->async_wait(std::bind(&Controller::workTimedTask, this));
 
-
+    sdf::init();
 
     return true;
 }

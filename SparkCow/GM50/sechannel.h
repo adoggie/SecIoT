@@ -32,7 +32,8 @@ public:
 //        std::string         token;                  // 接入服务的身份令牌 登录成功时返回
 
         ByteArray       remote_pub_key;       //
-        ByteArray       local_pub_key;
+        ByteArray       local_pub_key_sign;
+        ByteArray       local_pub_key_enc;
         ByteArray       local_pri_key;
         ByteArray       remote_id; // manage center 's id
         ByteArray       local_id ; // agent's id

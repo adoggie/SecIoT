@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 2.8)
 project(Monkey)
 
 set(CMAKE_CXX_STANDARD 11)
-add_definitions( -D_MACOS -fpermissive)
+add_definitions( -D_MACOS -fpermissive -D_SDF_IMPL)
 include_directories(/usr/local/include)
 include_directories(/usr/local/include /usr/local/Cellar/boost/1.60.0_2/include )
 link_directories(/usr/local/lib /usr/local/lib64)
-link_libraries(boost_system  jsoncpp pthread nanomsg )
+link_libraries(boost_system  jsoncpp pthread nanomsg sdf_crypto)
 aux_source_directory(GM50 SRCS_GM50)
 #set(CMAKE_CXX_FLAGS "-static ${CMAKE_CXX_FLAGS}")
 add_executable(Monkey CowServer.cpp Controller.cpp  connection.cpp error.cpp logger.cpp  message.cpp
@@ -36,7 +36,7 @@ add_executable(Monkey CowServer.cpp Controller.cpp  connection.cpp error.cpp log
 #        SecChanGateServer/Upstream.cpp SecChanGateServer/Upstream.h sdf-impl.h UserSecChannel.cpp
 #        UserSecChannel.h
         Connector.cpp Connector.h Direction.h DirectionIn.cpp DirectionIn.h
-        DirectionOut.cpp DirectionOut.h Direction.cpp SDK/include/sparkcow.h SDK/spackcow.cpp SDK/ContextConnection.cpp SDK/ContextConnection.h SDK/InProcDirectionIn.cpp SDK/InProcDirectionIn.h SDK/InProcConnector.cpp SDK/InProcConnector.h SDK/SDKDeviceManagementImpl.cpp SDK/SDKDeviceManagementImpl.h)
+        DirectionOut.cpp DirectionOut.h Direction.cpp )
 
 #add_subdirectory(GM50)
 #target_link_libraries(Monkey GM50)

@@ -76,6 +76,7 @@ void MessageChannelCreateResponse::marshall(ByteStream& stream){
 
 /// GM50/8.1
 MessageChannelSend::Ptr MessageChannelSend::parse(ByteStream& stream){
+
     MessageChannelSend::Ptr  m = std::make_shared<MessageChannelSend>();
     std::uint8_t  app_id = stream.readByte();
     std::uint8_t  type = stream.readByte();
@@ -98,7 +99,7 @@ void MessageChannelSend::marshall(ByteStream& stream){
     ByteArray cipherText;
     key.data();
     pdu.data();
-    sdf::data_enc(sdf::KeyID(0), SGD_SM4_ECB, key.data(), key.size(), pdu.data(), pdu.size(), cipherText);
+    sdf::data_enc(sdf::KeyID(0), SGD_SMS4_ECB, key.data(), key.size(), pdu.data(), pdu.size(), cipherText);
     stream.writeBytes(cipherText.data(), cipherText.size());
 }
 

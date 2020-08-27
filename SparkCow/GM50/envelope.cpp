@@ -170,13 +170,21 @@ Envelope::Ptr EnvelopeManager::parse(const char *  data ,size_t size){
     evp->channel = channel_;
     for(auto& p: ChannelMessageParseFuncList){
         if( evp->op_type == p.first){
-            MessageChannelTraverse::Ptr  message = p.second( stream );
+            ByteArray pdu(stream.current() , stream.current() + evp->pdu_len);
+            if(evp->op_type == OperationType::ChannelMessageSend){
+                //decrypt data
+                ByteArray data;
+                decryptPDU(pdu,data);
+                pdu = data;
+            }
+            ByteStream pdustream(pdu.data(),pdu.size());
+            MessageChannelTraverse::Ptr  message = p.second( pdustream );
             evp->detail = message;
             message->envelope = evp.get();
             break;
         }
     }
-
+    stream.next( evp->pdu_len);
     // verify( header + pdu)
     std::uint32_t  sign_data_size = stream.position();
 
@@ -199,6 +207,15 @@ Envelope::Ptr EnvelopeManager::parse(const char *  data ,size_t size){
 
 //    this->channel_->getSettings().remote_id
     return evp;
+}
+
+void EnvelopeManager::decryptPDU(ByteArray& pdu ,ByteArray& data){
+    ByteArray& key = this->channel_->getSettings().temp_key; // use my key
+    sdf::data_dec(sdf::KeyID(0), SGD_SMS4_ECB,
+                  key.data(), key.size(),
+                  pdu.data(), pdu.size(),
+                  data
+    );
 }
 
 Envelope::Ptr EnvelopeManager::createEnvelope(){

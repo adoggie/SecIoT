@@ -10,6 +10,8 @@
 #include <vector>
 
 #include "GM50/apps/SecKeyManagement.h"
+#include "SDF/sdf.h"
+
 namespace sdf{
     typedef std::vector<char> ByteArray;
     typedef ByteArray PublicKey;
@@ -33,6 +35,7 @@ namespace sdf{
 
     void data_hash(AlgorithmType algo_type, const char* data,size_t  size,ByteArray &hash) ;
 
+    void data_dec2(KeyID key_id,std::uint64_t algo_type,const char * key, size_t key_size, const char* enc_data,size_t  size,ByteArray & data) ;
 
 
     KeyID get_current_keyid();
@@ -41,6 +44,20 @@ namespace sdf{
     void  destroy_keys();
     void  enable_keys(std::vector<std::uint32_t> keys);
     void  disable_keys( std::vector<std::uint32_t> keys);
+
+    bool init();
+    void cleanup();
+
+    // key for sign  1
+    // key for cipher 0
+    enum KeyCreateType{
+        KeyCreateForSignECC =0x0001,
+        KeyCreateForCipherECC = 0x0000,
+        KeyCreateForSignRSA = 0x0101,
+        KeyCreateForCipherRSA = 0x0100
+    };
+
+    bool create_keypair(uint32_t key_index, KeyCreateType type,uint32_t  bit_size,ByteArray & data);
 
 }
 

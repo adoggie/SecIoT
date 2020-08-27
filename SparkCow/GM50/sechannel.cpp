@@ -14,6 +14,7 @@
 //#include "../ManagedAgent.h"
 #include "../message.h"
 #include "../bundles/all.h"
+#include <boost/beast/core/detail/base64.hpp>
 
 
 
@@ -84,7 +85,7 @@ void SecChannel::onMessageChannelCreateRequest(const MessageChannelCreateRequest
         ByteArray data; //= settings_.temp_peer_key+ settings_.temp_key;
         std::copy(settings_.temp_peer_key.begin(), settings_.temp_peer_key.end(), std::back_inserter(data));
         std::copy(settings_.temp_key.begin(), settings_.temp_key.end(), std::back_inserter(data));
-        sdf::data_enc(sdf::KeyID(0),SGD_SM4_ECB,settings_.remote_pub_key.data(), settings_.remote_pub_key.size(),
+        sdf::data_enc(sdf::KeyID(0),SGD_SM2,settings_.remote_pub_key.data(), settings_.remote_pub_key.size(),
                       data.data(), data.size(),response->enc_data);
     }
     {
@@ -190,9 +191,26 @@ bool SecChannel::init(const Config& props){
     value = cfgs_.get_string("local_pri_key","");
     std::copy( value.begin(),value.begin()+value.size(),std::back_inserter(settings_.local_pri_key));
 
-    value = cfgs_.get_string("local_pub_key");
-    std::copy( value.begin(),value.begin()+value.size(),std::back_inserter(settings_.local_pub_key));
+    value = cfgs_.get_string("local_pub_key_sign");
+    std::copy( value.begin(),value.begin()+value.size(),std::back_inserter(settings_.local_pub_key_sign));
+    {
+        ByteArray bytes;
+        bytes.resize(boost::beast::detail::base64::decoded_size(settings_.local_pub_key_sign.size()));
+        auto const result = boost::beast::detail::base64::decode(
+                &bytes[0], settings_.local_pub_key_sign.data(), settings_.local_pub_key_sign.size());
+        settings_.local_pub_key_sign = bytes;
+    }
 
+
+    value = cfgs_.get_string("local_pub_key_enc");
+    std::copy( value.begin(),value.begin()+value.size(),std::back_inserter(settings_.local_pub_key_enc));
+    {
+        ByteArray bytes;
+        bytes.resize(boost::beast::detail::base64::decoded_size(settings_.local_pub_key_enc.size()));
+        auto const result = boost::beast::detail::base64::decode(
+                &bytes[0], settings_.local_pub_key_enc.data(), settings_.local_pub_key_enc.size());
+        settings_.local_pub_key_enc = bytes;
+    }
 
     value = cfgs_.get_string("remote_id");
     std::copy_n( value.begin(),value.size(),settings_.remote_id.begin());
@@ -264,7 +282,7 @@ void SecChannel::onConnected(const Connection::Ptr& conn){
     // 产生临时密钥
     sdf::random_create(this->settings_.temp_key,32);
     // 对点公钥加密
-    sdf::data_enc(sdf::KeyID(0),SGD_SM2,this->settings_.local_pub_key.data(),this->settings_.local_pub_key.size(),
+    sdf::data_enc(sdf::KeyID(0),SGD_SM2,this->settings_.local_pub_key_enc.data(),this->settings_.local_pub_key_enc.size(),
             settings_.temp_key.data(), settings_.temp_key.size(),
             message->enc_data);
     // 自己私钥签名

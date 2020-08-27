@@ -61,6 +61,7 @@ protected:
 
     Envelope::Ptr parse(const char *  data ,size_t size);
 
+    void decryptPDU(ByteArray& pdu ,ByteArray& data);
 private:
 //    std::vector<char> B;
     ByteStream buff_;
