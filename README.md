@@ -24,14 +24,15 @@
 ### 2. 设计
 
 1. **系统结构**
-![avatar](Docs/images/overview.png)
+
+![avatar](https://github.com/adoggie/SecIoT/blob/master/Docs/images/overview.png)
 
 1. **Monkey and GWServer**
-![avatar](Docs/images/monk-and-gw.png)
+![avatar](https://github.com/adoggie/SecIoT/blob/master/Docs/images/monk-and-gw.png)
 
 
 1. **Secure Channel**
-![avatar](Docs/images/sec-channel.png)
+![avatar](https://github.com/adoggie/SecIoT/blob/master/Docs/images/sec-channel.png)
 
 1. **Secure Channel**
-![avatar](Docs/images/sec-channel2.png)
+![avatar](https://github.com/adoggie/SecIoT/blob/master/Docs/images/sec-channel2.png)
